@@ -44,3 +44,4 @@ python main_cifar.py --train True --resume False --batch_size 28 --step_size 0.0
 ```
 In most setting of our experiments, we use a single nvidia A100 GPU, which has 40GB memory and we set the batch size to 28 during training. You may try to reduce the batch size if the memory is not enough on your case. Or you may try the multi-gpu version code (**coming soon**).
 Note that some hyperparameters (like the MCMC step size) might be different during training and image synthesizing, so please refer to Section A.2 in our paper for the detailed training hyperparameters for each experiment.
+Also, if you want to train the model in CoopFlow(pre) setting. You can download the pretrained flow model in "[this link](https://drive.google.com/drive/folders/1NY5NA7wIguuGEnH4jo-vQ4f4fxFyC-58?usp=sharing)" to flow_ckpt folder (e.g. './flow_ckpt/cifar10.pth.tar').
