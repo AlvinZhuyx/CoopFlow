@@ -107,7 +107,7 @@ def main(args):
             print("Img {} step {} time {:.3f} error {:.3f}".format(i, j, time.time() - start_time, error))
             if j == args.num_steps_recons - 1:
                 # set the unmask pixels to be same as observation
-                xk = xk * (1.0 - mask[i]) + masked_imgs[i] * mask[i]
+                xk = xk * (1.0 - masks[i]) + masked_imgs[i] * masks[i]
             if j < 10  or j % 20 == 0:
                 save_list.append(torch.unsqueeze(xk.clone().detach(), 1))
 
