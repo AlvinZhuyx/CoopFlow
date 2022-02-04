@@ -28,12 +28,15 @@ python -m pytorch_fid ./exp_cifar/ori_samples ./exp_cifar_gen_samples
 4. The generated samples should look like following. Please refer to the paper for more results.
 
 **cifar-10** (left: initial proposal by normalizing flow; right: modified version of Langevin flow) 
+
 <img src="/images/cifar_flow.png" width="300"/> <img src="/images/Cifar10.png" width="300"/> 
 
 **svhn** (left: initial proposal by normalizing flow; right: modified version of Langevin flow) 
+
 <img src="/images/SVHN_flow35.png" width="300"/> <img src="/images/SVHN.png" width="300"/>
 
 **celeba** (left: initial proposal by normalizing flow; right: modified version of Langevin flow) 
+
 <img src="/images/Celeba_flow44.png" width="300"/> <img src="/images/Celeba32.png" width="300"/>
 
 
