@@ -105,6 +105,9 @@ def main(args):
             x0.data -= args.step_size_recons * ratio * grad_x0
             x0 = torch.clamp(x0, -1.0, 1.0)
             print("Img {} step {} time {:.3f} error {:.3f}".format(i, j, time.time() - start_time, error))
+            if j == args.num_steps_recons - 1:
+                # set the unmask pixels to be same as observation
+                xk = xk * (1.0 - mask[i]) + masked_imgs[i] * mask[i]
             if j < 10  or j % 20 == 0:
                 save_list.append(torch.unsqueeze(xk.clone().detach(), 1))
 
