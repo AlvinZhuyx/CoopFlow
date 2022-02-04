@@ -1,0 +1,1 @@
+Please download the pretrained flow checkpoints into this folder if you want to retrain the CoopFlow(Pre) models.
