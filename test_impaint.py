@@ -140,8 +140,8 @@ if __name__ == '__main__':
     parser.add_argument('--step_size', default=0.03, type=float, help='Langevin step size')
 
     parser.add_argument('--num_steps_recons', default=201, type=int, help='number of steps for doing reconstruction')
-    parser.add_argument('--step_size_recons', default=0.05, type=float, help='Langevin step size') 
-    parser.add_argument('--ratio', default=1.0, type=float, help='ratio for shrink reconstruction step size')
+    parser.add_argument('--step_size_recons', default=0.03, type=float, help='Langevin step size') 
+    parser.add_argument('--ratio', default=0.99, type=float, help='ratio for shrink reconstruction step size')
 
     parser.add_argument('--num_workers', default=4, type=int, help='Number of data loader threads')
     parser.add_argument('--load_path', default='./ckpt/celeba.pth.tar', type=str, help='location of pretrained checkpoint')
