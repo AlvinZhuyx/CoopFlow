@@ -65,3 +65,10 @@ To reproduce the image impainting results on celeba with pre-trained CoopFlow mo
 python test_impaint.py
 ```
 
+**Image interpolation**
+
+To reproduce the image interpolation results on celeba with pre-trained CoopFlow model in section 5.4. Please first download the checkpoint to folder ckpt ('ckpt/celeba.pth.tar'), then run the following command
+```bash
+python test_interp.py
+```
+
