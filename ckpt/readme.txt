@@ -1,0 +1,1 @@
+Please download the pretrained checkpoints into this folder if you want to do image synthesizing.
