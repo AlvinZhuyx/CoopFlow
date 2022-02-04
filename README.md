@@ -46,3 +46,12 @@ In most setting of our experiments, we use a single nvidia A100 GPU, which has 4
 Note that some hyperparameters (like the MCMC step size) might be different during training and image synthesizing, so please refer to Section A.2 in our paper for the detailed training hyperparameters for each experiment.
 
 Also, if you want to train the model in CoopFlow(pre) setting. You can download the pretrained flow model in "[this link](https://drive.google.com/drive/folders/1NY5NA7wIguuGEnH4jo-vQ4f4fxFyC-58?usp=sharing)" to flow_ckpt folder (e.g. './flow_ckpt/cifar10.pth.tar').
+
+## Exp3: Image reconstruction
+To reproduce the image reconstruction results on cifar10 with pre-trained CoopFlow model in section 5.3. Please first download the checkpoint to folder ckpt ('ckpt/cifar10.pth.tar'), then run the following command
+```bash
+python test_recons.py
+```
+The sample reconsruction should look like
+<img src="/images/recons2.png" width="100"/>
+
