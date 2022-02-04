@@ -53,5 +53,6 @@ To reproduce the image reconstruction results on cifar10 with pre-trained CoopFl
 python test_recons.py
 ```
 The sample reconsruction should look like
-<img src="/images/recons2.png" width="100"/>
+
+<img src="/images/recons2.png" width="250"/>
 
