@@ -31,8 +31,16 @@ python -m pytorch_fid ./exp_cifar/ori_samples ./exp_cifar_gen_samples
 <img src="/images/cifar_flow.png" width="425"/> <img src="/images/Cifar10.png" width="425"/> 
 
 **svhn** (left: initial proposal by normalizing flow; right: modified version of Langevin flow) 
-<img src="/images/svhn_flow35.png" width="425"/> <img src="/images/SVHN.png" width="425"/>
+<img src="/images/SVHN_flow35.png" width="425"/> <img src="/images/SVHN.png" width="425"/>
 
 **celeba** (left: initial proposal by normalizing flow; right: modified version of Langevin flow) 
 <img src="/images/Celeba_flow44.png" width="425"/> <img src="/images/Celeba32.png" width="425"/>
 
+
+## Exp2: Retrain the models
+To retrain the model, you still run each 'main_\*.py' file with training mode. An example can be seen here:
+```bash
+python main_cifar.py --train True --resume False --batch_size 28 --step_size 0.03
+```
+In most setting of our experiments, we use a single nvidia A100 GPU, which has 40GB memory and we set the batch size to 28 during training. You may try to reduce the batch size if the memory is not enough on your case. Or you may try the multi-gpu version code (**coming soon**).
+Note that some hyperparameters (like the MCMC step size) might be different during training and image synthesizing, so please refer to Section A.2 in our paper for the detailed training hyperparameters for each experiment.
