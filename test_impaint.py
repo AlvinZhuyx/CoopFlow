@@ -128,7 +128,7 @@ def ebm_sample(net, K=10, step_size=0.02, device='cpu', x_0=None):
     return x_k
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='test OOD')
+    parser = argparse.ArgumentParser(description='test impaint')
     def str2bool(s):
         return s.lower().startswith('t')
 

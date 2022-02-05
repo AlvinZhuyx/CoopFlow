@@ -34,7 +34,7 @@ def main(args):
                                         transforms.ToTensor(),
                                         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     
-    testset = torchvision.datasets.ImageFolder(root='./data/celeba', transform=transform_test)
+    testset = torchvision.datasets.ImageFolder(root='./celeba', transform=transform_test)
     testloader = data.DataLoader(testset, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
 
     ebm_net = EBM(n_c=3, n_f=128)
@@ -140,7 +140,7 @@ def ebm_sample(net, K=10, step_size=0.02, device='cpu', x_0=None):
     return x_k
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='test OOD')
+    parser = argparse.ArgumentParser(description='test interpolate')
     def str2bool(s):
         return s.lower().startswith('t')
 
