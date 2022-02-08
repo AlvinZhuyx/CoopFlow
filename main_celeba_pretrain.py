@@ -20,7 +20,6 @@ from models import FlowPlusPlus
 from models import EBM_res as EBM
 from tqdm import tqdm
 from matplotlib import pyplot as plt
-from fid import *
 
 # this time we update 5 step for energy based model vs update 1 step of flow model
 
@@ -116,6 +115,7 @@ def main(args):
     best_fid = np.inf
     gnorms_flow = []
     gnorms_ebm = []
+    print('Begin training')
     for epoch in range(start_epoch, start_epoch + args.num_epochs):
         gnorms_flow, gnorms_ebm = train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_scheduler, flow_optimizer, flow_scheduler,
               loss_fn, args.max_grad_norm, args, save_checkpoint=(epoch % 3 == 0), gnorms_flow=gnorms_flow, gnorms_ebm=gnorms_ebm)
@@ -140,7 +140,7 @@ def train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_sche
 
         x_ebm = ebm_sample(epoch, ebm_net, m=64, n_ch=3, im_w=32, im_h=32, K=args.num_steps_Langevin_coopNet, step_size=args.step_size, device=device, p_0=x_flow\
                            , num_sample=args.batch_size, save_images=False, save_dir=args.save_dir)
-        mse_loss = torch.sum(torch.mean((x_ebm.detach() - x_flow) ** 2, dim=0)).detach()
+        mse_loss = torch.sum(torch.mean((x_ebm.detach() - x_flow) ** 2, dim=0)).detach() # just monitor image change not influence optimization
         
         flow_optimizer.zero_grad()
         if (counter % args.n_update_flow == 0) and epoch >= 10:  # only update ebm at the first 10 epochs
@@ -228,7 +228,7 @@ def train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_sche
                                          normalize=True, nrow=int(args.batch_size ** 0.5))
             
         if counter % 20 == 0:
-            print('Epoch {} iter {}/{} time{:.3f} FLOW: mse loss {:.3f} flow_loss {:.3f} EBM: pos en {:.3f} neg en{:.3f} en diff {:.3f}' \
+            print('Epoch {} iter {}/{} time{:.3f} FLOW: image mse change {:.3f} flow_loss {:.3f} EBM: pos en {:.3f} neg en{:.3f} en diff {:.3f}' \
                 .format(epoch, counter, num_iter, time.time() - start_time, mse_loss, flow_loss, en_pos, en_neg, ebm_loss))
 
         if save_checkpoint and counter == num_iter - 1:

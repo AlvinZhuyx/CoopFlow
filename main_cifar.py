@@ -116,16 +116,17 @@ def train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_sche
     counter = 0
     start_time = time.time()
     num_iter = math.ceil(float(len(trainloader.dataset)) / args.batch_size)
-    # with tqdm(total=len(trainloader.dataset)) as progress_bar:
 
     for x, _ in trainloader:
         # train flow model
         x = x.to(device)
-        if epoch == 0 and counter < 200:
+        if epoch == 0 and counter < 5:
+            if counter == 0:
+                print('Data dependent initialization for flow parameter at the begining of training')
             flow_net(x.detach(), reverse=False)
-            if counter % 20 == 0:
-                print(counter, time.time() - start_time)
             counter += 1
+            if counter == 5:
+                print('Begin training')
             continue
 
         x_flow = sample_flow(flow_net, args.batch_size, device).detach()
@@ -133,7 +134,7 @@ def train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_sche
         save_img = (counter % 200 == 0)
         x_ebm = ebm_sample(epoch, ebm_net, m=64, n_ch=3, im_w=32, im_h=32, K=args.num_steps_Langevin_coopNet, step_size=args.step_size, device=device, p_0=x_flow\
                            , num_sample=args.batch_size, save_images=save_img, save_dir=args.save_dir)
-        mse_loss = torch.sum(torch.mean((x_ebm.detach() - x_flow) ** 2, dim=0))
+        mse_loss = torch.sum(torch.mean((x_ebm.detach() - x_flow) ** 2, dim=0)).detach() # just monitor image change, not influence optimization
         flow_optimizer.zero_grad()
         z, sldj = flow_net(x_ebm.detach(), reverse=False)
         flow_loss = loss_fn(z, sldj)
@@ -187,7 +188,7 @@ def train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_sche
             torchvision.utils.save_image(torch.clamp(x, -1., 1.), '{}/ori_{}.png'.format(args.save_dir, epoch),
                                          normalize=True, nrow=int(args.batch_size ** 0.5))
         if counter % 20 == 0:
-            print('Epoch {} iter {}/{} time{:.3f} FLOW: mse loss {:.3f} flow_loss {:.3f} EBM: pos en {:.3f} neg en{:.3f} en diff {:.3f}' \
+            print('Epoch {} iter {}/{} time{:.3f} FLOW: image mse change {:.3f} flow_loss {:.3f} EBM: pos en {:.3f} neg en{:.3f} en diff {:.3f}' \
                 .format(epoch, counter, num_iter, time.time() - start_time, mse_loss, flow_loss, en_pos, en_neg, ebm_loss))
 
         if save_checkpoint and counter == num_iter - 1:

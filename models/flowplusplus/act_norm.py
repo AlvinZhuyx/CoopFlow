@@ -49,7 +49,7 @@ class _BaseNorm(nn.Module):
     def forward(self, x, ldj=None, reverse=False):
         x = torch.cat(x, dim=1)
         if not self.is_initialized:
-            print("initializing act norm")
+            #print("initializing act norm")
             self.initialize_parameters(x)
 
         if reverse:

@@ -21,7 +21,6 @@ from models import FlowPlusPlus
 from models import EBM_res as EBM
 from tqdm import tqdm
 from matplotlib import pyplot as plt
-from fid import *
 
 
 def main(args):
@@ -126,21 +125,22 @@ def train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_sche
     counter = 0
     start_time = time.time()
     num_iter = math.ceil(float(len(trainloader.dataset)) / args.batch_size)
-    # with tqdm(total=len(trainloader.dataset)) as progress_bar:
     x_list = []
     for x, _ in trainloader:
         # train flow model
         x = x.to(device)
-        if epoch == 0 and counter < 200:
-            x_list.append(x.clone())
+        if epoch == 0 and counter < 20:
+            if counter == 0:
+                print('Data dependent initialization for flow parameter at the begining of training')
+            x_list.append(x.clone()) # use more data to do data dependent initialization
             if len(x_list) >= 20:
                 x_list = torch.cat(x_list, dim=0)
                 with torch.no_grad():
                     flow_net(x_list.detach(), reverse=False)
                 x_list = []
-            if counter % 20 == 0:
-                print(counter, time.time() - start_time)
             counter += 1
+            if counter == 19:
+                print('Begin training')
             continue
 
         x_flow = sample_flow(flow_net, args.batch_size, device).detach()
@@ -148,7 +148,7 @@ def train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_sche
         #save_img = (counter % 200 == 0)
         x_ebm = ebm_sample(epoch, ebm_net, m=64, n_ch=3, im_w=32, im_h=32, K=args.num_steps_Langevin_coopNet, step_size=args.step_size, device=device, p_0=x_flow\
                            , num_sample=args.batch_size, save_images=False, save_dir=args.save_dir)
-        mse_loss = torch.sum(torch.mean((x_ebm.detach() - x_flow) ** 2, dim=0))
+        mse_loss = torch.sum(torch.mean((x_ebm.detach() - x_flow) ** 2, dim=0)).detach() # just monitor image change, not influence optimization
         flow_optimizer.zero_grad()
         z, sldj = flow_net(x_ebm.detach(), reverse=False)
         flow_loss = loss_fn(z, sldj)
@@ -228,7 +228,7 @@ def train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_sche
             np.save('{}/grad_norm_ebm.npy'.format(args.save_dir), np.array(gnorms_ebm))
 
         if counter % 20 == 0:
-            print('Epoch {} iter {}/{} time{:.3f} FLOW: mse loss {:.3f} flow_loss {:.3f} EBM: pos en {:.3f} neg en{:.3f} en diff {:.3f}' \
+            print('Epoch {} iter {}/{} time{:.3f} FLOW: image mse change {:.3f} flow_loss {:.3f} EBM: pos en {:.3f} neg en{:.3f} en diff {:.3f}' \
                 .format(epoch, counter, num_iter, time.time() - start_time, mse_loss, flow_loss, en_pos, en_neg, ebm_loss))
 
         if save_checkpoint and counter == num_iter - 1:
@@ -355,7 +355,7 @@ if __name__ == '__main__':
                         help='L2 regularization (only applied to the weight norm scale factors)')
     parser.add_argument('--num_steps_Langevin_coopNet', default=30, type=int,
                         help='number of Langevin steps in CoopNets')
-    parser.add_argument('--step_size', default=0.035, type=float, help='Langevin step size') 0.03
+    parser.add_argument('--step_size', default=0.035, type=float, help='Langevin step size') 
     parser.add_argument('--train', default=False, type=bool, help='whether to train the model or to generate image for computing fid')
     parser.add_argument('--n_fid_sample', default=20000, type=int, help='number of samples to estimate fid during training')
 
