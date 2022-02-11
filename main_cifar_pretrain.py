@@ -351,7 +351,7 @@ def test(ebm_net, flow_net, testloader, device, args):
     for x, _ in testloader:
         batch_size = len(x)
         with torch.no_grad():
-            x_flow = sample_flow(flow_net,batch_size, device)
+            x_flow = sample_flow(flow_net,batch_size, device).detach()
         x_ebm = ebm_sample(0, ebm_net, m=64, n_ch=3, im_w=32, im_h=32, K=args.num_steps_Langevin_coopNet, step_size=args.step_size, device=device, p_0=x_flow, num_sample=batch_size, save_images=False)
         # print(x_ebm.max(), x_ebm.min(), x.max(), x.min())
         for i in range(batch_size):
