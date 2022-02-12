@@ -44,14 +44,19 @@ python -m pytorch_fid ./exp_cifar/ori_samples ./exp_cifar_gen_samples
 
 
 ## Exp 2: Retrain the models
-To train the model, you can run 'main_\*.py' with the training mode, for eaxmple:
+To train the model, you can run 'main_\*.py' with the training mode, for example:
 ```bash
 python main_cifar.py --train True --resume False --batch_size 28 --step_size 0.03
 ```
 In most setting of our experiments, we use a single nvidia A100 GPU, which has 40GB memory and we set the batch size to 28 during training. You may try to reduce the batch size if the memory is not enough on your case. Or you may try the multi-gpu version code (**coming soon**).
 Note that some hyperparameters (like the MCMC step size) might be different during training and image synthesizing, please refer to Section A.2 in our paper for the detailed training hyperparameters in each experiment.
 
-Also, if you want to train the model in CoopFlow(pre) setting. You can download the pretrained flow model in "[this link](https://drive.google.com/drive/folders/1NY5NA7wIguuGEnH4jo-vQ4f4fxFyC-58?usp=sharing)" to flow_ckpt folder (e.g. './flow_ckpt/cifar10.pth.tar').
+If you want to train the model in CoopFlow(pre) setting. You need a pretrained flow++ model first. You can train the flow model using the "[code here](https://github.com/chrischute/flowplusplus)". We also provide our pretrained flow++ model in "[this link](https://drive.google.com/drive/folders/1NY5NA7wIguuGEnH4jo-vQ4f4fxFyC-58?usp=sharing)">. You can download the corresponding pretrained flow++ checkpoint to the flow_ckpt folder (e.g. './flow_ckpt/cifar10.pth.tar'). Then  (take cifar10 as an example) similarly run
+```bash
+python main_cifar_pretrain.py --train True --resume False --batch_size 28 --step_size 0.03
+```
+
+
 
 ## Exp 3: Other testing experiments
 **Image reconstruction**
