@@ -126,7 +126,7 @@ def train(epoch, ebm_net, flow_net, trainloader, device, ebm_optimizer, ebm_sche
     for x, _ in trainloader:
         # train flow model
         x = x.to(device)
-        if epoch == 0 and counter < 21:
+        if epoch == 0 and counter < 200:
             if counter == 0:
                 print('Data dependent initialization for flow parameter at the begining of training')
             x_list.append(x.clone())
