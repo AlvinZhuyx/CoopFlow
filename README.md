@@ -25,7 +25,7 @@ python main_cifar.py
 
 3. Compute FID: The code save generated images (The number of synthesized images is 50,000 in total) in the folder './exp_cifar/gen_samples' and original images to './exp_cifar/ori_samples'. Then you can use "[pytorch_fid](https://github.com/mseitzer/pytorch-fid)" to calculate the FID score. For example, you can use the following command
 ```bash
-python -m pytorch_fid ./exp_cifar/ori_samples ./exp_cifar_gen_samples
+python -m pytorch_fid ./exp_cifar/ori_samples ./exp_cifar/gen_samples
 ```
 
 4. The following are synthesized examples. Please refer to the paper for more results.
