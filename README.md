@@ -14,7 +14,7 @@ conda activate fpp
 ```
 
 ## Exp 1: Image synthesis with pretrained models
-1. To generate images using pretrained models, please first download the pretrained checkpoints from "[this link](https://drive.google.com/drive/folders/1NY5NA7wIguuGEnH4jo-vQ4f4fxFyC-58?usp=sharing)". The folder contains checkpoints with different experimental settings. Please check the Readme file for detailed descriptions. The checkpoints should be downloaded to the ckpt folder (e.g., you should have 'ckpt/cifar10.pth.tar' for CoopFlow cifar10 setting).
+1. To generate images using pretrained models, please first download the pretrained checkpoints from "[this link](https://drive.google.com/drive/folders/0BzMJuBlJFv0Wfkw1bG5kbmN5bjRtYjJkaDZ4YkY2TUwzRUpiTXpLUlJQUi1vUXlTYk9PU2s?resourcekey=0-_MS9kFs0DTYau0GB1DRHew&usp=sharing)". The folder contains checkpoints with different experimental settings. Please check the Readme file for detailed descriptions. The checkpoints should be downloaded to the ckpt folder (e.g., you should have 'ckpt/cifar10.pth.tar' for CoopFlow cifar10 setting).
 
 2. After the checkpoint is downloaded, you can perform image synthesis using files 'main_\*.py'. Each individual code corresponds to a different dataset. The *main_cifar.py, main_celeba.py, main_svhn.py* are codes for basic CoopFlow setting. The *main_cifar_pretrain.py main_celeba_pretrain.py, main_svhn_pretrain.py* are codes for CoopFlow(Pre) setting. For CoopFlow(Long) setting, we use multi-gpu for training and the code will come later.  
 
